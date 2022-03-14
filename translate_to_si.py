@@ -42,7 +42,7 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-batchCount = 400
+batchCount = 300
 batchLines = ""
 
 print ("Simple Sinhala translator")
@@ -67,7 +67,7 @@ print(f"{bcolors.OKBLUE}Reading:{bcolors.ENDC}", filepath)
 outfilename = filename+'_translated'+file_extension
 print(f"{bcolors.OKCYAN}Output file:{bcolors.ENDC}", outfilename)
 print (" ")
-fileOutput = open(filename+'_translated'+file_extension, 'w')
+fileOutput = open(filename+'_Sinhala_translated'+file_extension, 'w')
 
 # Open the file and using readlines()
 file = open(filepath, 'r')
@@ -109,6 +109,14 @@ for line in Lines:
     if (progress % 10 == 0 and old_progress != progress):
         old_progress = progress
         print("Progress: ", progress, "%")
+
+
+# Finally check any left lines left in batchLines and process it too
+if len(batchLines) > 0:
+    result = translator.translate(batchLines.strip(), src=lang, dest='si')
+    text = result.text  + "\n"
+    fileOutput.writelines(text)
+    batchLines = ""
 
 fileOutput.close()
 
